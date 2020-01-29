@@ -14,16 +14,16 @@ class Index extends Base
         $post = input('post.');
         $agent = new Agent();
 
-        if ($agent->isRobot()) {
-            $this->error('机器人行为，请联系管理员', null, '', 10);
-        }
 
         $browser = $agent->browser();
         $platform = $agent->platform();
 
         //提交
         if ($post) {
-            //验证码
+            //验证
+            if ($agent->isRobot()) {
+                $this->error('机器人行为，请联系管理员', null, '', 10);
+            }
             if (empty($post['name']) || empty($post['temperature'])
                 || empty($post['journey']) || empty('date')) {
                 $this->error('请完善表单再提交');
