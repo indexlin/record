@@ -1,0 +1,103 @@
+{layout name="layout/base" /}
+<ol class="breadcrumb-job navbar-fixed-top" id="navbar_top">
+    <span id="go_to_job_list" class="glyphicon glyphicon-chevron-left">&nbsp;</span>信息填写
+</ol>
+<br><br><br>
+<div class="container">
+    <form class="form-horizontal" id="form" method="post">
+        <div class="form-group">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <input type="text" class="form-control" placeholder="请填写完整姓名,例如：王小明" name="name"
+                       value="" required data-bv-notempty-message="姓名不能为空" maxlength="12">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <input type="text" class="form-control" placeholder="请填写今日体温，例如:36.6" name="temperature"
+                       value="" required  data-bv-notempty-message="请填写今日体温">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-3 col-sm-3 col-md-3 col-lg-3 control-label">详细行程</label>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <textarea style="height: 120px;" class="form-control" maxlength="700" required data-bv-notempty-message="请填写每日行程"
+                  placeholder="请填写每日行程" name="journey"></textarea>
+                <span style="color: #ff0000">(如果内容比多，建议在其他地方编辑再粘贴，以免按错意外退出或需要重新提交)</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-3 col-sm-3 col-md-3 col-lg-3 control-label">记录时间</label>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <input autocomplete="off" type="text" class="form-control form_date" name="date"
+                       value="{:date('Y-m-d')}" readonly>
+            </div>
+            <div class=" col-xs-offset-3 col-md-offset-3 col-sm-offset-3 col-lg-offset-3 col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                <span style="color: #ff0000">(请注意，日期默认为今天！)</span>
+            </div>
+        </div>
+
+        <input type="hidden" name="fever"  id="fever_input" value="0">
+        <input type="hidden" name="cold" id="cold_input" value="0">
+        <div class="form-group">
+            <div class="text-right div-switch" >
+                <label>是否发烧:</label>
+                <input id="fever_switch" type="checkbox"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="text-right div-switch">
+                <label>是否感冒:</label>
+                <input id="cold_switch" type="checkbox"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-offset-6 col-md-offset-6 col-sm-offset-6 col-lg-offset-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
+                <button class="btn btn-danger btn-lg" type="submit">保存<span class="glyphicon glyphicon-ok"></span></button>
+            </div>
+        </div>
+        <br>
+    </form>
+</div>
+<link href="__PUBLIC__/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css?versions={$versions}"
+      rel="stylesheet"
+      media="screen">
+<script type="text/javascript"
+        src="__PUBLIC__/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js?versions={$versions}"
+        charset="UTF-8"></script>
+<script type="text/javascript"
+        src="__PUBLIC__/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"
+        charset="UTF-8"></script>
+
+<script type="text/javascript">
+    $('#fever_switch').bootstrapSwitch({ size:'normal',onColor: 'danger',onText:'发烧',offText:'否'});
+    $('#cold_switch').bootstrapSwitch({ size:'normal',onColor: 'danger',onText:'感冒',offText:'否'});
+
+
+    $('form').submit(function(){
+        if($('#fever_switch').bootstrapSwitch('state')){
+            $('#fever_input').val(0);
+        }else{
+            $('#fever_input').val(1);
+        }
+        if($('#cold_switch').bootstrapSwitch('state')){
+            $('#cold_input').val(0);
+        }else{
+            $('#cold_input').val(1);
+        }
+    });
+
+    $('.form_date').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language: 'zh-CN',
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 'month',
+        minView: 'month',
+        forceParse: 0,
+        startDate: "2020-01-30",
+        endDate: "{:date('Y-m-d')}",
+    });
+    $('#form').bootstrapValidator();
+</script>

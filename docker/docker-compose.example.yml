@@ -1,0 +1,47 @@
+version: '3'
+
+networks:
+  record:
+    driver: bridge
+
+services:
+
+  nginx:
+    container_name: record-nginx
+    image: nginx:1.17.0
+    depends_on:
+      - "php"
+    volumes:
+      - ../server:/server
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ../data/nginx/logs:/logs
+    networks:
+      - record
+    ports:
+      - "91:80"
+
+  php:
+    container_name: record-php
+    image: indexlin/gzyx-php7.2.4:1.0
+    working_dir: /server
+    volumes:
+      - ../server:/server
+    networks:
+      - record
+    ports:
+      - "9091:9000"
+
+
+  mysql:
+    container_name: record-mysql
+    image: mysql:5.7.21
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: record
+      MYSQL_PASSWORD: record
+    volumes:
+      - ../data/mysql:/var/lib/mysql
+    networks:
+      - record
+    ports:
+      - "3391:3306"
