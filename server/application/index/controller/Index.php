@@ -15,7 +15,7 @@ class Index extends Base
         $agent = new Agent();
 
         if ($agent->isRobot()) {
-            $this->error('系统检测恶意请求，请系统管理员', null, '', 10);
+            $this->error('机器人行为，请联系管理员', null, '', 10);
         }
 
         $browser = $agent->browser();
